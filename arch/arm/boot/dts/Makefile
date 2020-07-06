@@ -801,6 +801,7 @@ dtb-$(CONFIG_SOC_DRA7XX) += \
 	am57xx-cl-som-am57x.dtb \
 	am57xx-sbc-am57x.dtb \
 	am572x-idk.dtb \
+	am572x-cb2p-swissQprint.dtb \
 	am572x-tqm-swissQprint.dtb \
 	am574x-idk.dtb \
 	am571x-idk.dtb \
