@@ -109,6 +109,108 @@
 		};
 
 	};
+
+    gpio_in {
+        status = "disabled";
+		compatible = "gpio-keys";
+        
+		HwVersion0 {            // mapped on gpiochip3 line 6
+			label = "HwVersion0";
+			gpios = <&gpio5 6 GPIO_ACTIVE_HIGH>;
+			default-state = "off";
+		};
+        HwVersion1 {            // mapped on gpiochip3 line 7
+			label = "HwVersion1";
+			gpios = <&gpio5 7 GPIO_ACTIVE_HIGH>;
+			default-state = "off";
+		};
+		HwVersion2 {            // mapped on gpiochip2 line 5
+			label = "HwVersion2";
+			gpios = <&gpio4 5 GPIO_ACTIVE_HIGH>;
+			default-state = "off";
+		};
+		HwVersion3 {            // mapped on gpiochip3 line 1
+			label = "HwVersion3";
+			gpios = <&gpio5 1 GPIO_ACTIVE_HIGH>;
+			default-state = "off";
+		};
+        
+		LinkDetect {            // mapped on gpiochip1 line 6
+			label = "LinkDetect";
+			gpios = <&gpio3 6 GPIO_ACTIVE_HIGH>;
+			default-state = "off";
+		};
+        
+		nSupplyError {          // mapped on gpiochip1 line 17
+			label = "nSupplyError";
+			gpios = <&gpio3 17 GPIO_ACTIVE_LOW>;
+			default-state = "off";
+		};
+        
+        SafetyIn0 {             // mapped on gpiochip1 line 8
+			label = "SafetyIn0";
+			gpios = <&gpio3 8 GPIO_ACTIVE_HIGH>;
+			default-state = "off";
+		};
+        SafetyIn1 {             // mapped on gpiochip1 line 9
+			label = "SafetyIn1";
+			gpios = <&gpio3 9 GPIO_ACTIVE_HIGH>;
+			default-state = "off";
+		};
+        SafetyIn2 {             // mapped on gpiochip1 line 10
+			label = "SafetyIn2";
+			gpios = <&gpio3 10 GPIO_ACTIVE_HIGH>;
+			default-state = "off";
+		};
+        SafetyIn3 {             // mapped on gpiochip1 line 11
+			label = "SafetyIn3";
+			gpios = <&gpio3 11 GPIO_ACTIVE_HIGH>;
+			default-state = "off";
+		};
+        
+        TestIO0 {               // mapped on gpiochip1 line 14
+            label = "TestIO0";
+			gpios = <&gpio3 14 GPIO_ACTIVE_HIGH>;
+			default-state = "off";
+		};
+        TestIO1 {               // mapped on gpiochip1 line 15
+            label = "TestIO1";
+			gpios = <&gpio3 15 GPIO_ACTIVE_HIGH>;
+			default-state = "off";
+		};
+        TestIO2 {               // mapped on gpiochip1 line 16
+            label = "TestIO2";
+			gpios = <&gpio3 16 GPIO_ACTIVE_HIGH>;
+			default-state = "off";
+		};
+        TestIO3 {               // mapped on gpiochip0 line 28
+            label = "TestIO3";
+			gpios = <&gpio2 28 GPIO_ACTIVE_HIGH>;
+			default-state = "off";
+		};
+	};
+    
+    gpio_out {
+        status = "disabled";
+		compatible = "gpio-leds";
+        
+		nInterfaceOE {          // mapped on gpiochip1 line 24
+			label = "nInterfaceOE";
+			gpios = <&gpio3 24 GPIO_ACTIVE_LOW>;
+			default-state = "off";
+		};
+        
+        DataOut0 {              // mapped on gpiochip1 line 12
+			label = "DataOut0";
+			gpios = <&gpio3 12 GPIO_ACTIVE_HIGH>;
+			default-state = "off";
+		};
+        DataOut1 {              // mapped on gpiochip1 line 13
+			label = "DataOut1";
+			gpios = <&gpio3 13 GPIO_ACTIVE_HIGH>;
+			default-state = "off";
+		};
+	};
     
 	/* Dual-MAC Ethernet application node on PRU-ICSS2 */
 	pruss2_eth: pruss2_eth {
@@ -271,7 +373,4 @@
 	extcon = <&extcon_usb2>;
 };
 
-//&gpio5 {
-//	pinctrl-names = "default";
-//	pinctrl-0 = <&gpio5_pins>;
-//};
+

@@ -116,6 +116,23 @@
 		};
 	};
 
+    gpios {
+        status = "disabled";
+		compatible = "gpio-leds";
+        
+		test-out0 {
+			label = "test-out0";
+			gpios = <&gpio3 22 GPIO_ACTIVE_HIGH>;
+			default-state = "on";
+		};
+
+		test-out1 {
+			label = "test-out1";
+			gpios = <&gpio3 21 GPIO_ACTIVE_HIGH>;
+			default-state = "off";
+		};
+	};
+    
 	/* Dual-MAC Ethernet application node on PRU-ICSS2 */
 	pruss2_eth: pruss2_eth {
 		compatible = "ti,am57-prueth";
