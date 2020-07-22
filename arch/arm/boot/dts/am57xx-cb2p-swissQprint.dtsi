@@ -16,12 +16,6 @@
 #include <dt-bindings/input/input.h>
 
 / {
-	aliases {
-//		display0 = &hdmi0;
-		ethernet2 = &pruss2_emac0;
-		ethernet3 = &pruss2_emac1;
-	};
-
 
 	chosen {
 		stdout-path = &uart4;
@@ -108,6 +102,37 @@
 			default-state = "off";
 		};
 
+	};
+
+    
+	/* Dual-MAC Ethernet application node on PRU-ICSS2 */
+	pruss2_eth: pruss2_eth {
+		compatible = "ti,am57-prueth";
+		prus = <&pru2_0>, <&pru2_1>;
+		firmware-name = "ti-pruss/am57xx-pru0-prueth-fw.elf",
+				"ti-pruss/am57xx-pru1-prueth-fw.elf";
+		sram = <&ocmcram1>;
+		interrupt-parent = <&pruss2_intc>;
+		mii-rt = <&pruss2_mii_rt>;
+		iep = <&pruss2_iep>;
+
+		pruss2_emac0: ethernet-mii0 {
+			phy-handle = <&dp83822_0>;
+			phy-mode = "mii";
+			interrupts = <20>, <22>;
+			interrupt-names = "rx", "tx";
+			/* Filled in by bootloader */
+			local-mac-address = [00 00 00 00 00 00];
+		};
+
+		pruss2_emac1: ethernet-mii1 {
+			phy-handle = <&dp83822_1>;
+			phy-mode = "mii";
+			interrupts = <21>, <23>;
+			interrupt-names = "rx", "tx";
+			/* Filled in by bootloader */
+			local-mac-address = [00 00 00 00 00 00];
+		};
 	};
 
     gpio_in {
@@ -211,37 +236,6 @@
 			default-state = "off";
 		};
 	};
-    
-	/* Dual-MAC Ethernet application node on PRU-ICSS2 */
-	pruss2_eth: pruss2_eth {
-		compatible = "ti,am57-prueth";
-		prus = <&pru2_0>, <&pru2_1>;
-		firmware-name = "ti-pruss/am57xx-pru0-prueth-fw.elf",
-				"ti-pruss/am57xx-pru1-prueth-fw.elf";
-		sram = <&ocmcram1>;
-		interrupt-parent = <&pruss2_intc>;
-		mii-rt = <&pruss2_mii_rt>;
-		interrupts = <20>, <21>;
-		interrupt-names = "rx_red_hp", "rx_red_lp";
-
-		pruss2_emac0: ethernet-mii0 {
-			phy-handle = <&dp83822_0>;
-			phy-mode = "mii";
-			interrupts = <20>, <22>;
-			interrupt-names = "rx", "tx";
-			/* Filled in by bootloader */
-			local-mac-address = [00 00 00 00 00 00];
-		};
-
-		pruss2_emac1: ethernet-mii1 {
-			phy-handle = <&dp83822_1>;
-			phy-mode = "mii";
-			interrupts = <21>, <23>;
-			interrupt-names = "rx", "tx";
-			/* Filled in by bootloader */
-			local-mac-address = [00 00 00 00 00 00];
-		};
-	};
 };
 
 /* Debug UART */
@@ -303,9 +297,9 @@
 	vmmc-supply = <&vdd_3v3>;
 	vmmc_aux-supply = <&ldo1_reg>;
 	bus-width = <4>;
-	cd-gpios = <&gpio6 27 0>;
+	cd-gpios = <&gpio6 27 0>; /* gpio 219 */
 	cd-inverted;
-	wp-gpios = <&gpio6 28 0>;
+	wp-gpios = <&gpio6 28 0>; /* gpio 220 */
 	pinctrl-names = "default", "hs";
 	pinctrl-0 = <&mmc1_pins_default>;
 	pinctrl-1 = <&mmc1_pins_hs>;
@@ -341,7 +335,6 @@
 
 &pruss_soc_bus1 {
 	status = "okay";
-
 	pruss1: pruss@4b200000 {
 		status = "okay";
 	};
@@ -349,7 +342,6 @@
 
 &pruss_soc_bus2 {
 	status = "okay";
-
 	pruss2: pruss@4b280000 {
 		status = "okay";
 	};

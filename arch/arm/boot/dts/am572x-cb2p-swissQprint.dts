@@ -22,12 +22,12 @@
 
 /* PCIe lane 1 mPCIe connector */
 &pcie2_rc {
-	status = "okay";
+	status = "disabled";
 	/* PCIe reset R532 not placed */
 };
 
 &pcie2_phy {
-	status = "okay";
+	status = "disabled";
 };
 
-#include "am57xx-cb2p-pru-uio-swissQprint.dtsi"
+#include "am57xx-swissQprint-ethercat-pru.dtsi"
