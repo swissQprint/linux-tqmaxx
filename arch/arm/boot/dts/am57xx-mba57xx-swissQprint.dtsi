@@ -17,8 +17,9 @@
 
 / {
 	aliases {
-		display0 = &hdmi0;
-		spi1 = &mcspi1;
+//		display0 = &hdmi0;
+		ethernet2 = &pruss2_emac0;
+		ethernet3 = &pruss2_emac1;
 	};
 
 
@@ -115,51 +116,33 @@
 		};
 	};
 
-	hdmi0: connector@0 {
-		compatible = "hdmi-connector";
-		label = "hdmi";
-		type = "a";
-		port {
-			hdmi_connector_in: endpoint {
-				remote-endpoint = <&tpd12s015_out>;
-			};
+    gpios {
+        status = "disabled";
+		compatible = "gpio-leds";
+        
+		test-out0 {
+			label = "test-out0";
+			gpios = <&gpio3 22 GPIO_ACTIVE_HIGH>;
+			default-state = "on";
+		};
+
+		test-out1 {
+			label = "test-out1";
+			gpios = <&gpio3 21 GPIO_ACTIVE_HIGH>;
+			default-state = "off";
 		};
 	};
-
-	/* HDMI companion chip */
-	tpd12s015: encoder@0 {
-		compatible = "ti,tpd12s016", "ti,tpd12s015";
-		gpios = <0>, /* optional CT_CP_HPD */
-			<0>, /* optional LS_OE */
-			<&gpio7 12 GPIO_ACTIVE_HIGH>;   /* HPD */
-		pinctrl-names = "ddc";
-		pinctrl-0 = <&hdmi_i2c_pins_ddc>;
-		ddc-i2c-bus = <&i2c2>;
-
-		ports {
-			#address-cells = <1>;
-			#size-cells = <0>;
-			port@0 {
-				reg = <0>;
-				tpd12s015_in: endpoint@0 {
-					remote-endpoint = <&hdmi_out>;
-				};
-			};
-			port@1 {
-				reg = <1>;
-				tpd12s015_out: endpoint@0 {
-					remote-endpoint = <&hdmi_connector_in>;
-				};
-			};
-		};
-	};
-
+    
 	/* Dual-MAC Ethernet application node on PRU-ICSS2 */
 	pruss2_eth: pruss2_eth {
 		compatible = "ti,am57-prueth";
-		pruss = <&pruss2>;
+		prus = <&pru2_0>, <&pru2_1>;
+		firmware-name = "ti-pruss/am57xx-pru0-prueth-fw.elf",
+				"ti-pruss/am57xx-pru1-prueth-fw.elf";
 		sram = <&ocmcram1>;
 		interrupt-parent = <&pruss2_intc>;
+		mii-rt = <&pruss2_mii_rt>;
+		iep = <&pruss2_iep>;
 
 		pruss2_emac0: ethernet-mii0 {
 			phy-handle = <&dp83822_0>;
@@ -180,7 +163,7 @@
 		};
 	};
 
-    buzzer {
+	buzzer {
 		compatible = "gpio-beeper";
 		gpios = <&gpio6 19 GPIO_ACTIVE_HIGH>;
 	};
@@ -432,14 +415,7 @@
 };
 
 &hdmi {
-	status = "okay";
-	vdda-supply = <&ldo4_reg>;
-
-	port {
-		hdmi_out: endpoint {
-			remote-endpoint = <&tpd12s015_in>;
-		};
-	};
+	status = "disabled";
 };
 
 &ehrpwm1 {
@@ -470,41 +446,32 @@
 	};
 };
 
+&mcspi1 {
+	status = "okay";
+	pinctrl-names = "default";
+	pinctrl-0 = <&spi1_pins>;
+
+	spidev0: spidev@0 {
+		compatible = "rohm,dh2228fv";
+		reg = <0>;
+		spi-max-frequency = <100000>;
+	};
+};
+
+
 &pruss_soc_bus1 {
 	status = "okay";
+
 	pruss1: pruss@4b200000 {
 		status = "okay";
-		pru1_0: pru@4b234000 {
-			interrupt-parent = <&pruss1_intc>;
-			interrupts = <16>, <17>;
-			interrupt-names = "vring", "kick";
-			status = "okay";
-		};
-		pru1_1: pru@4b238000 {
-			interrupt-parent = <&pruss1_intc>;
-			interrupts = <18>, <19>;
-			interrupt-names = "vring", "kick";
-			status = "okay";
-		};
 	};
 };
 
 &pruss_soc_bus2 {
 	status = "okay";
+
 	pruss2: pruss@4b280000 {
 		status = "okay";
-		pru2_0: pru@4b2b4000 {
-			interrupt-parent = <&pruss2_intc>;
-			interrupts = <16>, <17>;
-			interrupt-names = "vring", "kick";
-			status = "okay";
-		};
-		pru2_1: pru@4b2b8000 {
-			interrupt-parent = <&pruss2_intc>;
-			interrupts = <18>, <19>;
-			interrupt-names = "vring", "kick";
-			status = "okay";
-		};
 	};
 };
 
@@ -519,18 +486,6 @@
 
 	dp83822_1: ethernet-phy@1 {
 		reg = <1>;
-	};
-};
-
-&mcspi1 {
-	status = "okay";
-	pinctrl-names = "default";
-	pinctrl-0 = <&spi1_pins>;
-
-	spidev0: spidev@0 {
-		compatible = "rohm,dh2228fv";
-		reg = <0>;
-		spi-max-frequency = <100000>;
 	};
 };
 
@@ -558,4 +513,3 @@
 	pinctrl-names = "default";
 	pinctrl-0 = <&gpio2_pins>;
 };
-

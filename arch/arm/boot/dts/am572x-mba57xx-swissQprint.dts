@@ -11,7 +11,7 @@
 /dts-v1/;
 
 #include "am572x-tqma57xx.dtsi"
-#include "am57xx-mba-swissQprint.dtsi"
+#include "am57xx-mba57xx-swissQprint.dtsi"
 
 / {
 	model = "TQ TQMa5728 MBa57xx";
@@ -30,4 +30,4 @@
 	status = "okay";
 };
 
-#include "am57xx-tqm-pru-uio-swissQprint.dtsi"
+#include "am57xx-swissQprint-ethercat-pru.dtsi"
