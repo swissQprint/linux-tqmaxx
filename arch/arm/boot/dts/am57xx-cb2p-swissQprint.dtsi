@@ -238,6 +238,54 @@
 	};
 };
 
+&dra7_pmx_core {
+	spi1_pins: pinmux_spi1_pins {
+		pinctrl-single,pins = <
+			DRA7XX_CORE_IOPAD(0x37a4, PIN_INPUT_PULLDOWN | MUX_MODE0)      /* spi1_sclk */
+			DRA7XX_CORE_IOPAD(0x37a8, PIN_INPUT_PULLDOWN | MUX_MODE0)      /* spi1_d1 */
+			DRA7XX_CORE_IOPAD(0x37ac, PIN_OUTPUT | MUX_MODE0)              /* spi1_d0 */
+			DRA7XX_CORE_IOPAD(0x37b0, PIN_INPUT_PULLUP | MUX_MODE0)        /* spi1_cs0 */
+		>;
+	};
+};
+
+//&mcspi2 {
+//    compatible = "ti,uio-module-drv";
+//    mem = <0x4809a000 0x1000>;
+//    mem-names= "spiControl";
+//    pinctrl-names = "default";
+//    pinctrl-0 = <&spi1_pins>;
+//    status = "okay";
+//};
+
+
+
+
+&mcspi1 {
+   
+	compatible = "linux,spi-mcspi-slave";
+	mem = <0x48098000 0x1000>;
+	#address-cells = <1>;
+    #size-cells = <0>;
+    reg = <0x48098000 0x1000>;
+    interrupts = <GIC_SPI 60 IRQ_TYPE_LEVEL_HIGH>;
+	ti,spi-num-cs = <1>;
+	ti,hwmods = "mcspi1";
+	dmas = <&sdma_xbar 35>,
+	       <&sdma_xbar 36>;
+	dma-names = "tx0", "rx0";
+    pinctrl-names = "default";
+    pinctrl-0 = <&spi1_pins>;
+    status = "okay";
+	
+	spislave0@0 {
+		compatible = "linux,spislave";
+		spi-max-frequency = <48000000>;
+		reg = <0>; /* chip select 0*/   
+		};
+				
+};
+
 /* Debug UART */
 &uart4 {
 	status = "okay";
