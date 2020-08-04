@@ -216,13 +216,13 @@
 	};
     
     gpio_out {
-        status = "disabled";
+        status = "okay";
 		compatible = "gpio-leds";
         
 		nInterfaceOE {          // mapped on gpiochip1 line 24
 			label = "nInterfaceOE";
 			gpios = <&gpio3 24 GPIO_ACTIVE_LOW>;
-			default-state = "off";
+			default-state = "on";
 		};
         
         DataOut0 {              // mapped on gpiochip1 line 12
