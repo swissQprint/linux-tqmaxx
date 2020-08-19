@@ -193,11 +193,6 @@
 			default-state = "off";
 		};
         
-        TestIO0 {               // mapped on gpiochip1 line 14
-            label = "TestIO0";
-			gpios = <&gpio3 14 GPIO_ACTIVE_HIGH>;
-			default-state = "off";
-		};
         TestIO1 {               // mapped on gpiochip1 line 15
             label = "TestIO1";
 			gpios = <&gpio3 15 GPIO_ACTIVE_HIGH>;
@@ -213,8 +208,23 @@
 			gpios = <&gpio2 28 GPIO_ACTIVE_HIGH>;
 			default-state = "off";
 		};
+
+		Trigger0 {          // mapped on gpiochip2 line 6
+			label = "Trigger0";
+			gpios = <&gpio4 6 GPIO_ACTIVE_LOW>;
+			default-state = "off";
+		};
+        
+		Trigger1 {          // mapped on gpiochip1 line 7
+			label = "Trigger1";
+			gpios = <&gpio3 7 GPIO_ACTIVE_LOW>;
+			default-state = "off";
+		};
+
 	};
-    
+  
+
+
     gpio_out {
         status = "okay";
 		compatible = "gpio-leds";
@@ -235,8 +245,17 @@
 			gpios = <&gpio3 13 GPIO_ACTIVE_HIGH>;
 			default-state = "off";
 		};
+        TestIO0 {               // mapped on gpiochip1 line 14
+            label = "TestIO0";
+			gpios = <&gpio3 14 GPIO_ACTIVE_HIGH>;
+			default-state = "off";
+		};
+
 	};
 };
+
+
+
 
 &dra7_pmx_core {
 	spi1_pins: pinmux_spi1_pins {
@@ -248,16 +267,6 @@
 		>;
 	};
 };
-
-//&mcspi2 {
-//    compatible = "ti,uio-module-drv";
-//    mem = <0x4809a000 0x1000>;
-//    mem-names= "spiControl";
-//    pinctrl-names = "default";
-//    pinctrl-0 = <&spi1_pins>;
-//    status = "okay";
-//};
-
 
 
 
