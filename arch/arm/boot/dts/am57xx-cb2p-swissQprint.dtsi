@@ -192,7 +192,11 @@
 			gpios = <&gpio3 11 GPIO_ACTIVE_HIGH>;
 			default-state = "off";
 		};
-        
+        TestIO0 {               // mapped on gpiochip1 line 14
+            label = "TestIO0";
+			gpios = <&gpio3 14 GPIO_ACTIVE_HIGH>;
+			default-state = "off";
+		};
         TestIO1 {               // mapped on gpiochip1 line 15
             label = "TestIO1";
 			gpios = <&gpio3 15 GPIO_ACTIVE_HIGH>;
@@ -245,11 +249,7 @@
 			gpios = <&gpio3 13 GPIO_ACTIVE_HIGH>;
 			default-state = "off";
 		};
-        TestIO0 {               // mapped on gpiochip1 line 14
-            label = "TestIO0";
-			gpios = <&gpio3 14 GPIO_ACTIVE_HIGH>;
-			default-state = "off";
-		};
+        
 		
 
 	};
