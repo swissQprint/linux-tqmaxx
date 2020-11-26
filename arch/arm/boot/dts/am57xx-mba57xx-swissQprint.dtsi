@@ -459,7 +459,7 @@
 };
 
 
-&pruss_soc_bus1 {
+&pruss1_tm {
 	status = "okay";
 
 	pruss1: pruss@4b200000 {
@@ -467,7 +467,7 @@
 	};
 };
 
-&pruss_soc_bus2 {
+&pruss2_tm{
 	status = "okay";
 
 	pruss2: pruss@4b280000 {
@@ -513,3 +513,4 @@
 	pinctrl-names = "default";
 	pinctrl-0 = <&gpio2_pins>;
 };
+
