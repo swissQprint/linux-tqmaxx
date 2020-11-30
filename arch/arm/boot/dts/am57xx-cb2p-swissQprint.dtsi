@@ -267,9 +267,48 @@
 			DRA7XX_CORE_IOPAD(0x37b0, PIN_INPUT_PULLUP | MUX_MODE0)        /* spi1_cs0 */
 		>;
 	};
+
+	usb2_id_pin: usb2_id_pin {
+		pinctrl-single,pins = <
+			DRA7XX_CORE_IOPAD(0x3824, PIN_INPUT | MUX_MODE14)	/* WAKEUP3.gpio1_3 */
+		>;
+	};
 };
 
+&i2c4 {
+	status = "okay";
+	clock-frequency = <400000>;
 
+	/* Input/Output GPIO Port Expander 16 bit */
+	expander1: pca9555@20 {
+		compatible = "nxp,pca9555";
+		reg = <0x20>;
+		interrupt-parent = <&gpio2>;
+		interrupts = <2 IRQ_TYPE_EDGE_FALLING>;
+		interrupt-controller;
+		#interrupt-cells = <2>;
+		gpio-controller;
+		#gpio-cells = <2>;
+		vcc-supply = <&vcc_3v3>;
+		status = "okay";
+		wakeup-source;
+	};
+
+	/* Output GPIO Port Expander 16 bit */
+	expander2: pca9555@21 {
+		compatible = "nxp,pca9555";
+		reg = <0x21>;
+		interrupt-parent = <&gpio5>;
+		interrupts = <7 IRQ_TYPE_EDGE_FALLING>;
+		interrupt-controller;
+		#interrupt-cells = <2>;
+		gpio-controller;
+		#gpio-cells = <2>;
+		vcc-supply = <&vcc_3v3>;
+		status = "okay";
+		wakeup-source;
+	};
+};
 
 &mcspi1 {
    
@@ -313,14 +352,12 @@
 	phy-handle = <&dp83867_0>;
 	phy-connection-type = "rgmii-id";
 	dual_emac_res_vlan = <1>;
-	reset-gpio = <&gpio3 22 GPIO_ACTIVE_LOW>;
 };
 
 &cpsw_emac1 {
 	phy-handle = <&dp83867_1>;
 	phy-connection-type = "rgmii-id";
 	dual_emac_res_vlan = <2>;
-	reset-gpio = <&gpio3 23 GPIO_ACTIVE_LOW>;
 };
 
 &davinci_mdio {
