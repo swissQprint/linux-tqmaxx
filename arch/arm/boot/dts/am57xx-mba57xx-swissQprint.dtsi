@@ -211,12 +211,24 @@
 		>;
 	};
 
+	gpio5_pins: pinmux_gpio5_pins {
+		pinctrl-single,pins = <
+			DRA7XX_CORE_IOPAD(0x36C8, MUX_MODE14 | PIN_INPUT | WAKEUP_EN) /* gpio5_7.gpio5_7 */
+		>;
+	};
+
 	spi1_pins: pinmux_spi1_pins {
 		pinctrl-single,pins = <
 			DRA7XX_CORE_IOPAD(0x37a4, PIN_INPUT | MUX_MODE0)         /* spi1_sclk */
 			DRA7XX_CORE_IOPAD(0x37a8, PIN_OUTPUT | MUX_MODE0)        /* spi1_d1 */
 			DRA7XX_CORE_IOPAD(0x37ac, PIN_INPUT_PULLUP | MUX_MODE0)  /* spi1_d0 */
 			DRA7XX_CORE_IOPAD(0x37b0, PIN_OUTPUT | MUX_MODE0)        /* spi1_cs0 */
+		>;
+	};
+
+	usb2_id_pin: usb2_id_pin {
+		pinctrl-single,pins = <
+			DRA7XX_CORE_IOPAD(0x3824, PIN_INPUT | MUX_MODE14)	/* WAKEUP3.gpio1_3 */
 		>;
 	};
 };
@@ -232,8 +244,7 @@
 		interrupt-parent = <&gpio2>;
 		interrupts = <2 IRQ_TYPE_EDGE_FALLING>;
 		interrupt-controller;
-		interrupt-cells = <2>;
-		irq-gpio = <&gpio2 2 IRQ_TYPE_EDGE_FALLING>;
+		#interrupt-cells = <2>;
 		gpio-controller;
 		#gpio-cells = <2>;
 		vcc-supply = <&vcc_3v3>;
@@ -245,10 +256,15 @@
 	expander2: pca9555@21 {
 		compatible = "nxp,pca9555";
 		reg = <0x21>;
-		#gpio-cells = <2>;
+		interrupt-parent = <&gpio5>;
+		interrupts = <7 IRQ_TYPE_EDGE_FALLING>;
+		interrupt-controller;
+		#interrupt-cells = <2>;
 		gpio-controller;
+		#gpio-cells = <2>;
 		vcc-supply = <&vcc_3v3>;
 		status = "okay";
+		wakeup-source;
 	};
 
 	/* USB Hub USB4604i
@@ -345,17 +361,15 @@
 };
 
 &cpsw_emac0 {
-	phy_id = <&davinci_mdio>, <2>;
-	phy-mode = "rgmii-id";
+	phy-handle = <&dp83867_0>;
+	phy-connection-type = "rgmii-id";
 	dual_emac_res_vlan = <1>;
-	reset-gpio = <&expander2 10 GPIO_ACTIVE_LOW>;
 };
 
 &cpsw_emac1 {
-	phy_id = <&davinci_mdio>, <3>;
-	phy-mode = "rgmii-id";
+	phy-handle = <&dp83867_1>;
+	phy-connection-type = "rgmii-id";
 	dual_emac_res_vlan = <2>;
-	reset-gpio = <&expander2 11 GPIO_ACTIVE_LOW>;
 };
 
 &davinci_mdio {
@@ -365,6 +379,7 @@
 		ti,tx-internal-delay = <DP83867_RGMIIDCTL_250_PS>;
 		ti,fifo-depth = <DP83867_PHYCR_FIFO_DEPTH_8_B_NIB>;
 		ti,min-output-impedance;
+		reset-gpio = <&expander2 10 GPIO_ACTIVE_LOW>;
 	};
 
 	dp83867_1: ethernet-phy@3 {
@@ -373,6 +388,7 @@
 		ti,tx-internal-delay = <DP83867_RGMIIDCTL_250_PS>;
 		ti,fifo-depth = <DP83867_PHYCR_FIFO_DEPTH_8_B_NIB>;
 		ti,min-output-impedance;
+		reset-gpio = <&expander2 11 GPIO_ACTIVE_LOW>;
 	};
 };
 
@@ -381,7 +397,9 @@
 };
 
 &usb2 {
-	dr_mode = "host";
+	pinctrl-names = "default";
+	pinctrl-0 = <&usb2_id_pin>;
+	dr_mode = "otg";
 };
 
 /* sd card */
@@ -390,9 +408,8 @@
 	vmmc-supply = <&vdd_3v3>;
 	vmmc_aux-supply = <&ldo1_reg>;
 	bus-width = <4>;
-	cd-gpios = <&gpio6 27 0>; /* gpio 219 */
-	cd-inverted;
-	wp-gpios = <&gpio6 28 0>; /* gpio 220 */
+	cd-gpios = <&gpio6 27 GPIO_ACTIVE_LOW>; /* gpio 219 */
+	wp-gpios = <&gpio6 28 GPIO_ACTIVE_HIGH>; /* gpio 220 */
 	pinctrl-names = "default", "hs";
 	pinctrl-0 = <&mmc1_pins_default>;
 	pinctrl-1 = <&mmc1_pins_hs>;
@@ -458,7 +475,6 @@
 	};
 };
 
-
 &pruss1_tm {
 	status = "okay";
 };
@@ -469,9 +485,9 @@
 
 &pruss2_mdio {
 	status = "okay";
-	reset-gpios = <&expander1 6 GPIO_ACTIVE_LOW>,
-		      <&expander1 7 GPIO_ACTIVE_LOW>;
-	reset-delay-us = <2>;
+	reset-gpios = <&expander1 6 GPIO_ACTIVE_LOW>, <&expander1 7 GPIO_ACTIVE_LOW>;
+	reset-assert-us = <2>;
+
 	dp83822_0: ethernet-phy@0 {
 		reg = <0>;
 	};
@@ -486,15 +502,13 @@
 };
 
 &extcon_usb2 {
+	/* WAKEUP3.gpio1_3 */
 	id-gpio = <&gpio1 3 GPIO_ACTIVE_HIGH>;
-	vbus-gpio = <&gpio3 23 GPIO_ACTIVE_HIGH>;
-	/* vbus-gpio: pad USB2_DRVVBUS, mode 0 */
 };
 
 /* PCIe lane 0 PCIe x4 connector */
 &pcie1_rc {
 	status = "okay";
-	reset-gpio = <&expander2 14 GPIO_ACTIVE_LOW>;
 };
 
 &sata {
@@ -506,3 +520,7 @@
 	pinctrl-0 = <&gpio2_pins>;
 };
 
+&gpio5 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&gpio5_pins>;
+};
