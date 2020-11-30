@@ -29,5 +29,4 @@
 	status = "disabled";
 };
 
-// Test without ethercat...
-// #include "am57xx-swissQprint-ethercat-pru.dtsi"
+#include "am57xx-swissQprint-ethercat-pru.dtsi"
