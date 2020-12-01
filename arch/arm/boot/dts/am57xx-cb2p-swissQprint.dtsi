@@ -307,7 +307,7 @@
 	};
 };
 
-&mcspi1 {
+sqpSpiSlave: spi@48098000 {
    
 	compatible = "linux,spi-mcspi-slave";
 	mem = <0x48098000 0x1000>;
