@@ -307,9 +307,8 @@
 	};
 };
 
-sqpSpiSlave: spi@48098000 {
-   
-	compatible = "linux,spi-mcspi-slave";
+&mcspi1 {
+	compatible = "sqp,spi-mcspi-slave";
 	mem = <0x48098000 0x1000>;
 	#address-cells = <1>;
     #size-cells = <0>;
@@ -325,11 +324,10 @@ sqpSpiSlave: spi@48098000 {
     status = "okay";
 	
 	spislave0@0 {
-		compatible = "linux,spislave";
+		compatible = "sqp,spislave";
 		spi-max-frequency = <48000000>;
 		reg = <0>; /* chip select 0*/   
-		};
-				
+	};
 };
 
 /* Debug UART */
