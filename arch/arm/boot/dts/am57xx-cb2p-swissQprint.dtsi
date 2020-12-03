@@ -309,7 +309,6 @@
 
 &mcspi1 {
 	compatible = "sqp,spi-mcspi-slave";
-	mem = <0x48098000 0x1000>;
 	#address-cells = <1>;
     #size-cells = <0>;
     reg = <0x48098000 0x1000>;
