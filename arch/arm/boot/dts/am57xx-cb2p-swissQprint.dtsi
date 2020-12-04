@@ -315,7 +315,6 @@
 	compatible = "sqp,spi-mcspi-slave";
 	#address-cells = <1>;
     #size-cells = <0>;
-    reg = <0x48098000 0x1000>;
     interrupts = <GIC_SPI 60 IRQ_TYPE_LEVEL_HIGH>;
 	ti,spi-num-cs = <1>;
 	ti,hwmods = "mcspi1";
