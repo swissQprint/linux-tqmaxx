@@ -313,14 +313,6 @@
 
 &mcspi1 {
 	compatible = "sqp,spi-mcspi-slave";
-	#address-cells = <1>;
-    #size-cells = <0>;
-    interrupts = <GIC_SPI 60 IRQ_TYPE_LEVEL_HIGH>;
-	ti,spi-num-cs = <1>;
-	ti,hwmods = "mcspi1";
-	dmas = <&sdma_xbar 35>,
-	       <&sdma_xbar 36>;
-	dma-names = "tx0", "rx0";
     pinctrl-names = "default";
     pinctrl-0 = <&spi1_pins>;
     status = "okay";
