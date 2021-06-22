@@ -90,17 +90,20 @@
 			gpios = <&gpio3 3 GPIO_ACTIVE_HIGH>;
 			default-state = "off";
 			linux,default-trigger = "cpu0";
+    		status = "disabled";
 		};
 		cpu1-led {
 			label = "status0:green:cpu1";
 			gpios = <&gpio2 30 GPIO_ACTIVE_HIGH>;
 			default-state = "off";
 			linux,default-trigger = "cpu1";
+    		status = "disabled";
 		};
 		error-led {
 			label = "status0:red:error";
 			gpios = <&gpio2 31 GPIO_ACTIVE_HIGH>;
 			default-state = "off";
+    		status = "disabled";
 		};
 
 	};
