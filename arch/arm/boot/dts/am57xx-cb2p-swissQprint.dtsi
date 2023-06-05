@@ -237,7 +237,7 @@
 		ti,tx-internal-delay = <DP83867_RGMIIDCTL_250_PS>;
 		ti,fifo-depth = <DP83867_PHYCR_FIFO_DEPTH_8_B_NIB>;
 		ti,min-output-impedance;
-		reset-gpios = <&gpio3 22 GPIO_ACTIVE_LOW>;
+		reset-gpio = <&gpio3 22 GPIO_ACTIVE_LOW>;
 	};
 
 	dp83867_1: ethernet-phy@3 {
@@ -246,7 +246,7 @@
 		ti,tx-internal-delay = <DP83867_RGMIIDCTL_250_PS>;
 		ti,fifo-depth = <DP83867_PHYCR_FIFO_DEPTH_8_B_NIB>;
 		ti,min-output-impedance;
-		reset-gpios = <&gpio3 23 GPIO_ACTIVE_LOW>;
+		reset-gpio = <&gpio3 23 GPIO_ACTIVE_LOW>;
 	};
 };
 
@@ -311,15 +311,14 @@
 
 &pruss2_mdio {
 	status = "okay";
+	reset-gpios = <&gpio5 8 GPIO_ACTIVE_LOW>, <&gpio5 9 GPIO_ACTIVE_LOW>;
 	reset-assert-us = <2>;
 	dp83822_0: ethernet-phy@0 {
 		reg = <0>;
-		reset-gpios = <&gpio5 8 GPIO_ACTIVE_LOW>;
 	};
 
 	dp83822_1: ethernet-phy@1 {
 		reg = <1>;
-		reset-gpios = <&gpio5 9 GPIO_ACTIVE_LOW>;
 	};
 };
 
