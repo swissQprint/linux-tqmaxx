@@ -222,14 +222,12 @@
 	phy-handle = <&dp83867_0>;
 	phy-connection-type = "rgmii-id";
 	dual_emac_res_vlan = <1>;
-	reset-gpio = <&expander2 10 GPIO_ACTIVE_LOW>;
 };
 
 &cpsw_emac1 {
 	phy-handle = <&dp83867_1>;
 	phy-connection-type = "rgmii-id";
 	dual_emac_res_vlan = <2>;
-	reset-gpio = <&expander2 11 GPIO_ACTIVE_LOW>;
 };
 
 &davinci_mdio {
@@ -239,6 +237,10 @@
 		ti,tx-internal-delay = <DP83867_RGMIIDCTL_250_PS>;
 		ti,fifo-depth = <DP83867_PHYCR_FIFO_DEPTH_8_B_NIB>;
 		ti,min-output-impedance;
+		reset-gpio = <&gpio3 22 GPIO_ACTIVE_LOW>;
+    	reset-delay-us = <2>;   /* PHY datasheet states 1uS min */
+		reset-assert-us = <2>;  /* PHY datasheet states 1uS min */
+		reset-deassert-us = <2>;
 	};
 
 	dp83867_1: ethernet-phy@3 {
@@ -247,6 +249,10 @@
 		ti,tx-internal-delay = <DP83867_RGMIIDCTL_250_PS>;
 		ti,fifo-depth = <DP83867_PHYCR_FIFO_DEPTH_8_B_NIB>;
 		ti,min-output-impedance;
+		reset-gpio = <&gpio3 23 GPIO_ACTIVE_LOW>;
+    	reset-delay-us = <2>;   /* PHY datasheet states 1uS min */
+		reset-assert-us = <2>;
+		reset-deassert-us = <2>;
 	};
 };
 
@@ -311,9 +317,9 @@
 
 &pruss2_mdio {
 	status = "okay";
-	reset-gpios = <&gpio5 8 GPIO_ACTIVE_LOW>,
-		      <&gpio5 9 GPIO_ACTIVE_LOW>;
-	reset-assert-us = <2>;
+	reset-gpios = <&gpio5 8 GPIO_ACTIVE_LOW>, <&gpio5 9 GPIO_ACTIVE_LOW>;
+	reset-assert-us = <20>;		/* DP83822 min 10 us reset pulse according datasheet */
+	reset-deassert-us = <20>;
 	dp83822_0: ethernet-phy@0 {
 		reg = <0>;
 	};
