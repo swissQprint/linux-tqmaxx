@@ -233,24 +233,24 @@
 &davinci_mdio {
 	dp83867_0: ethernet-phy@2 {
 		reg = <2>;
-		ti,rx-internal-delay = <DP83867_RGMIIDCTL_2_25_NS>;
+		ti,rx-internal-delay = <DP83867_RGMIIDCTL_2_75_NS>;
 		ti,tx-internal-delay = <DP83867_RGMIIDCTL_250_PS>;
 		ti,fifo-depth = <DP83867_PHYCR_FIFO_DEPTH_8_B_NIB>;
 		ti,min-output-impedance;
 		reset-gpio = <&gpio3 22 GPIO_ACTIVE_LOW>;
-    	reset-delay-us = <2>;   /* PHY datasheet states 1us min */
-		reset-assert-us = <2>;  /* PHY datasheet states 1us min */
+    	reset-delay-us = <2>;   /* PHY datasheet states 1uS min */
+		reset-assert-us = <2>;  /* PHY datasheet states 1uS min */
 		reset-deassert-us = <2>;
 	};
 
 	dp83867_1: ethernet-phy@3 {
 		reg = <3>;
-		ti,rx-internal-delay = <DP83867_RGMIIDCTL_2_25_NS>;
+		ti,rx-internal-delay = <DP83867_RGMIIDCTL_2_75_NS>;
 		ti,tx-internal-delay = <DP83867_RGMIIDCTL_250_PS>;
 		ti,fifo-depth = <DP83867_PHYCR_FIFO_DEPTH_8_B_NIB>;
 		ti,min-output-impedance;
 		reset-gpio = <&gpio3 23 GPIO_ACTIVE_LOW>;
-    	reset-delay-us = <2>;   /* PHY datasheet states 1us min */
+    	reset-delay-us = <2>;   /* PHY datasheet states 1uS min */
 		reset-assert-us = <2>;
 		reset-deassert-us = <2>;
 	};
